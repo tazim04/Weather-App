@@ -44,9 +44,9 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
   }
 
   const getIP = async () => {
-    const response = await axios.get("https://api.ipify.org/?format=json");
-    console.log("axios response: ", response.data);
-    setIp(response.data.ip);
+    const response = await axios.get("https://api.ipify.org");
+    console.log("axios response: ", response);
+    setIp(response.data);
   };
 
   const getMyLocation = () => {
