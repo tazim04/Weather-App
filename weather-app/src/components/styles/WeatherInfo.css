@@ -1,0 +1,20 @@
+p {
+    margin-top: 5%
+}
+
+.tempature {
+    margin-bottom: 0%;
+}
+
+.feelsLike {
+    margin-top: 0%;
+    font-size: 15px;
+}
+
+
+
+.yourLocationButton {
+    position: absolute;
+    top: 8px;
+    left: 12px;
+}

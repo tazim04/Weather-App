@@ -1,0 +1,21 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.night-text {
+  color: white;
+}
+
+.day-text {
+  color: black;
+}
+
+.yourLocationStatus {
+  position: absolute;
+  left: 12px;
+  bottom: -5px;
+  backdrop-filter: blur(10px);
+}
