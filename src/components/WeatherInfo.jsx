@@ -43,7 +43,7 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
   }
 
   const getIP = async () => {
-    const response = await axios.get("https://api.ipify.org");
+    const response = await axios.get("https://api.ipify.org?format=json");
     console.log("axios response: ", response);
     setIp(response.data);
   };
@@ -53,8 +53,8 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
 
     getIP();
 
-    const url_weather = `http://api.openweathermap.org/data/2.5/forecast?lat=45.421532&lon=-75.697189&appid=${openWeather_api_key}&units=metric`;
-    const url_geocode = `http://api.ipstack.com/${ip}?access_key=${ipstack_api_key}`;
+    const url_weather = `https://api.openweathermap.org/data/2.5/forecast?lat=45.421532&lon=-75.697189&appid=${openWeather_api_key}&units=metric`;
+    const url_geocode = `https://api.ipstack.com/${ip}?access_key=${ipstack_api_key}`;
 
     fetch(url_geocode)
       .then((response) => {
@@ -104,7 +104,7 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
 
     console.log("setNewCity: " + location);
 
-    const url_weather = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${openWeather_api_key}&units=metric`;
+    const url_weather = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${openWeather_api_key}&units=metric`;
     fetch(url_weather)
       .then((response) => {
         return response.json();
