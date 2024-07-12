@@ -1,16 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import ForecastIcon from "./ForecastIcon";
+import ForecastIcon from "./ForecastIcon.jsx";
 import SearchBar from "./SearchBar.jsx";
 import "./styles/WeatherInfo.css";
-import { toast, Flip } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, Flip } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const openWeather_api_key = import.meta.env.VITE_REACT_APP_OPENWEATHER_API_KEY;
 const ipstack_api_key = import.meta.env.VITE_REACT_APP_IPSTACK_API_KEY;
 
 function WeatherInfo({ setSunsetTime, setMyLocation }) {
-
   const [city, setCity] = useState(null);
   const [ip, setIp] = useState("");
   const [temp, setTemp] = useState(null);
@@ -19,18 +18,18 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
   const [description, setDescription] = useState(null);
   const [isMyLocation, setIsMyLocation] = useState(true);
 
-  const invalidLocation_popup = (input) => toast.error('Invalid location given!\n'+input, {
-    position: "top-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "colored",
-    transition: Flip,
-    });;
-  
+  const invalidLocation_popup = (input) =>
+    toast.error("Invalid location given!\n" + input, {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+      transition: Flip,
+    });
 
   useEffect(() => {
     getMyLocation();
@@ -54,8 +53,7 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
 
     getIP();
 
-    const url_weather =
-      `http://api.openweathermap.org/data/2.5/forecast?lat=45.421532&lon=-75.697189&appid=${openWeather_api_key}&units=metric`;
+    const url_weather = `http://api.openweathermap.org/data/2.5/forecast?lat=45.421532&lon=-75.697189&appid=${openWeather_api_key}&units=metric`;
     const url_geocode = `http://api.ipstack.com/${ip}?access_key=${ipstack_api_key}`;
 
     fetch(url_geocode)
@@ -67,7 +65,6 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
         console.log("City from geocode api: " + data.city);
         setCity(data.city);
         setMyLocation(data.city);
-
       });
 
     fetch(url_weather)
@@ -84,7 +81,7 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
         let sunsetDate = new Date(sunsetTimestamp * 1000);
         let sunsetHours = sunsetDate.getHours();
 
-        let timeZone = (data.city.timezone) / 3600;
+        let timeZone = data.city.timezone / 3600;
         console.log("timeZone: " + timeZone);
 
         setTemp(tempature);
@@ -92,7 +89,6 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
         setForecast(forecast);
         setDescription(capitalizeWords(description));
         setSunsetTime(sunsetHours);
-        setTimeZone(timeZone);
 
         console.log(data);
       });
@@ -106,7 +102,6 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
       getMyLocation();
     }
 
-
     console.log("setNewCity: " + location);
 
     const url_weather = `http://api.openweathermap.org/data/2.5/forecast?q=${location}&appid=${openWeather_api_key}&units=metric`;
@@ -115,36 +110,33 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
         return response.json();
       })
       .then((data) => {
-
         console.log(data);
 
         if (data.message == "city not found") {
           console.log("Invalid location!");
           invalidLocation_popup(location);
-
         } else {
           let tempature = data?.list[0].main.temp;
           let feelsLike = data?.list[0].main.feels_like;
           let forecast = data?.list[0];
           let description = data?.list[0].weather[0].description;
-  
+
           let sunsetTimestamp = data.city.sunset;
           let sunsetDate = new Date(sunsetTimestamp * 1000);
           let sunsetHours = sunsetDate.getHours();
 
-          let timeZone = (data.city.timezone) / 3600;
+          let timeZone = data.city.timezone / 3600;
           console.log("timeZone: " + timeZone);
-  
+
           setTemp(tempature);
           setFeelsLike(feelsLike);
           setForecast(forecast);
           setDescription(capitalizeWords(description));
           setSunsetTime(sunsetHours);
-          setTimeZone(timeZone);
-  
+
           // console.log("Temp: " + tempature);
           // console.log("Description: " + description);
-  
+
           console.log(data);
           setCity(capitalizeWords(location));
           setIsMyLocation(false);
@@ -152,20 +144,29 @@ function WeatherInfo({ setSunsetTime, setMyLocation }) {
       });
   };
 
-
   console.log("Entered Location: " + city);
 
   return (
     <div>
-      <SearchBar setCity={setCity} setNewCity={setNewCity}/>
+      <SearchBar setCity={setCity} setNewCity={setNewCity} />
       <ForecastIcon forecast={forecast} />
       {city != null ? <h2>{city}</h2> : "Loading..."}
 
-      {!isMyLocation ? <button type="button" className="btn btn-primary yourLocationButton" style={{color: 'white'}} onClick={getMyLocation}>Your Location Weather</button> : ""}
+      {!isMyLocation ? (
+        <button
+          type="button"
+          className="btn btn-primary yourLocationButton"
+          style={{ color: "white" }}
+          onClick={getMyLocation}
+        >
+          Your Location Weather
+        </button>
+      ) : (
+        ""
+      )}
 
       {isMyLocation ? <p>Your Location</p> : ""}
 
-      
       {temp != null ? (
         <h1 className="tempature">{Math.round(temp)}°C</h1>
       ) : (
